@@ -4,6 +4,9 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var Campground = require("./models/campground");
 var Comment = require("./models/comment");
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+var User = require("./models/user");
 var seedDB = require("./seeds");
 
 
@@ -21,8 +24,7 @@ app.get("/campgrounds", function (req, res) {
     Campground.find({}, function (err, allCampgrounds) {
         if (err) {
             console.log(err);
-        }
-        else {
+        } else {
             res.render("campgrounds/index", {campgrounds: allCampgrounds});
         }
     });
@@ -36,8 +38,7 @@ app.post("/campgrounds", function (req, res) {
     Campground.create(newCampground, function (err, newlyCreated) {
         if (err) {
             console.log(err);
-        }
-        else {
+        } else {
             res.redirect("/campgrounds");
         }
     });
@@ -51,8 +52,7 @@ app.get("/campgrounds/:id", function (req, res) {
     Campground.findById(req.params.id).populate("comments").exec(function (err, foundCampground) {
         if (err) {
             console.log(err);
-        }
-        else {
+        } else {
             res.render("campgrounds/show", {campground: foundCampground});
         }
     });
